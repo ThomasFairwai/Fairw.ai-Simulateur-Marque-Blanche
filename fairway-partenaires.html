@@ -1,0 +1,2139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fairwai — Espace Partenaires</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:          #EDEAE4;
+      --bg-card:     #F7F5F1;
+      --white:       #FFFFFF;
+      --black:       #111111;
+      --text:        #1A1A1A;
+      --text-mid:    #4A4A4A;
+      --text-light:  #888880;
+      --border:      #DEDAD3;
+      --border-light:#E8E4DE;
+      --accent:      #3452FF;
+      --accent-mid:  #2540E8;
+      --accent-light:#EEF0FF;
+      --accent-text: #2032C4;
+      --green:       #18A558;
+      --green-light: #E8F7EF;
+      --gold:        #C97B0A;
+      --gold-light:  #FEF3DC;
+      --shadow-sm:   0 1px 3px rgba(0,0,0,0.06);
+      --shadow:      0 2px 12px rgba(0,0,0,0.07);
+      --shadow-md:   0 6px 24px rgba(0,0,0,0.09);
+      --radius:      12px;
+      --radius-lg:   16px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .logo-img {
+      height: 44px;
+      width: auto;
+      display: block;
+    }
+
+    .header-title {
+      flex: 1;
+      text-align: center;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.5px;
+    }
+
+    .header-title span {
+      color: var(--accent);
+    }
+
+    .header-badge {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--white);
+      background: var(--accent);
+      border-radius: 6px;
+      padding: 4px 10px;
+      letter-spacing: 0.3px;
+      flex-shrink: 0;
+    }
+
+    /* ── SIMULATOR BAR ── */
+    .sim-bar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 134px; /* mis à jour dynamiquement par updateStickyTops() */
+      z-index: 80;
+    }
+
+    .sim-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 12px 40px;
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+
+    .sim-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      white-space: nowrap;
+    }
+
+    .sim-controls {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .margin-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .margin-input-wrap label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-mid);
+    }
+
+    .margin-range {
+      -webkit-appearance: none;
+      width: 140px;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--border);
+      outline: none;
+      cursor: pointer;
+    }
+
+    .margin-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+      box-shadow: 0 1px 6px rgba(52,82,255,0.35);
+      transition: transform 0.15s;
+    }
+
+    .margin-range::-webkit-slider-thumb:hover { transform: scale(1.15); }
+
+    .margin-num {
+      width: 62px;
+      padding: 5px 8px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--accent);
+      text-align: center;
+      outline: none;
+      font-family: 'Inter', sans-serif;
+      transition: border-color 0.15s;
+      background: var(--white);
+    }
+
+    .margin-num:focus { border-color: var(--accent); }
+
+    .toggle-billing {
+      display: flex;
+      background: var(--bg);
+      border: 2px solid var(--accent);
+      border-radius: 10px;
+      padding: 3px;
+      gap: 3px;
+    }
+
+    .toggle-billing button {
+      padding: 7px 18px;
+      border: none;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+      color: var(--accent);
+      background: transparent;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.1px;
+    }
+
+    .toggle-billing button.active {
+      background: var(--accent);
+      color: var(--white);
+      box-shadow: 0 2px 8px rgba(52,82,255,0.3);
+    }
+
+    .sim-info {
+      margin-left: auto;
+      font-size: 12px;
+      color: var(--text-light);
+    }
+
+    .sim-info span { font-weight: 700; color: var(--accent); }
+
+    /* ── TABS ── */
+    .tab-nav {
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 0;
+      position: sticky;
+      top: 72px; /* mis à jour dynamiquement par updateStickyTops() */
+      z-index: 90;
+    }
+
+    .tab-nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .tab-btn {
+      flex: 1;
+      max-width: 280px;
+      padding: 10px 20px;
+      border: 2px solid var(--border);
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-mid);
+      cursor: pointer;
+      transition: all 0.18s;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Inter', sans-serif;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .tab-btn:hover {
+      border-color: var(--accent);
+      color: var(--text);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow);
+    }
+
+    .tab-btn.active {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: var(--white);
+      box-shadow: 0 4px 16px rgba(52,82,255,0.3);
+    }
+
+    .tab-btn.tvoice.active {
+      border-color: var(--accent);
+      background: var(--accent);
+      box-shadow: 0 4px 16px rgba(52,82,255,0.3);
+    }
+
+    .tab-btn.tvoice:hover:not(.active) { border-color: var(--accent); }
+
+    .tab-btn-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      background: rgba(255,255,255,0.15);
+      flex-shrink: 0;
+    }
+
+    .tab-btn:not(.active) .tab-btn-icon {
+      background: var(--bg-card);
+    }
+
+    .tab-btn-text { text-align: left; }
+    .tab-btn-title { display: block; font-size: 15px; font-weight: 700; line-height: 1.2; }
+    .tab-btn-sub   { display: block; font-size: 11px; font-weight: 500; opacity: 0.7; margin-top: 2px; }
+
+    .tab-page { display: none; }
+    .tab-page.active { display: block; }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 40px 80px;
+    }
+
+    .section-header {
+      margin-bottom: 16px;
+      padding: 16px 20px;
+      background: var(--white);
+      border-radius: var(--radius);
+      border-left: 4px solid var(--accent);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .section-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -0.5px;
+    }
+
+    .section-subtitle {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-mid);
+      margin-top: 3px;
+    }
+
+    /* ── TABLE ── */
+    .table-wrap {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      overflow-x: auto;
+      overflow-y: hidden;
+      margin-bottom: 20px;
+    }
+
+    table { min-width: 860px; }
+
+    .table-title {
+      padding: 16px 24px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .table-title .toggle-billing {
+      margin-left: auto;
+    }
+
+    .table-title-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 20px;
+      background: var(--bg-card);
+      color: var(--text-light);
+      border: 1px solid var(--border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    thead tr { background: var(--bg-card); }
+
+    thead th {
+      padding: 11px 18px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      white-space: normal;
+      word-break: keep-all;
+      line-height: 1.3;
+      vertical-align: bottom;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    thead th:first-child { padding-left: 24px; }
+    thead th:last-child  { padding-right: 24px; }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border-light);
+      transition: background 0.12s;
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--bg-card); }
+
+    tbody td {
+      padding: 15px 18px;
+      vertical-align: middle;
+    }
+
+    tbody td:first-child { padding-left: 24px; }
+    tbody td:last-child  { padding-right: 24px; }
+
+    .palier-badge {
+      display: inline-flex;
+      align-items: center;
+      background: var(--text);
+      color: var(--white);
+      padding: 4px 11px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .price-purchase {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .price-hourly {
+      font-size: 11px;
+      color: var(--text-light);
+      margin-top: 2px;
+    }
+
+    .price-sell {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .price-margin {
+      display: inline-flex;
+      align-items: center;
+      background: var(--accent-light);
+      color: var(--accent-text);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-top: 3px;
+    }
+
+    .price-ref {
+      font-size: 12px;
+      color: var(--text-light);
+    }
+
+    /* ── LICENCE CARD ── */
+    .licence-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .licence-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .licence-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+
+    .licence-card.exec::before    { background: var(--accent); }
+    .licence-card.voice-ind::before { background: #E040FB; }
+
+    .licence-name {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 3px;
+    }
+
+    .licence-note {
+      font-size: 12px;
+      color: var(--text-light);
+      margin-bottom: 18px;
+    }
+
+    .licence-prices {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .lp-block {
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      text-align: center;
+    }
+
+    .lp-block-achat {
+      background: #F7F5F1;
+      border: 2px solid var(--border);
+    }
+
+    .lp-block-sell {
+      background: var(--accent-light);
+      border: 1px solid #C7CCFF;
+    }
+
+    .lp-block-gain {
+      background: var(--accent-light);
+      border: 1px solid #C7CCFF;
+    }
+
+    .lp-block-client {
+      background: #F4FCF7;
+      border: 2px solid #C5E8D5;
+    }
+
+    .lp-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-light);
+      margin-bottom: 6px;
+    }
+
+    .lp-value {
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .lp-sub {
+      font-size: 10px;
+      margin-top: 3px;
+      opacity: 0.75;
+    }
+
+    .lp-gain {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--green);
+      margin-top: 3px;
+    }
+
+    /* ── COLUMN HIGHLIGHTS ── */
+    /* Prix d'achat = col 2 */
+    thead th:nth-child(2) {
+      color: var(--text);
+      background: #F0EDE8;
+    }
+    tbody td:nth-child(2) {
+      background: #F7F5F1;
+      border-left: 2px solid var(--border);
+      border-right: 2px solid var(--border);
+    }
+    /* Achat / poste = col 3 */
+    thead th:nth-child(3) {
+      color: var(--text-mid);
+      background: #F7F5F1;
+      font-style: italic;
+    }
+    tbody td:nth-child(3) {
+      background: #F9F8F5;
+      border-right: 1px solid var(--border-light);
+    }
+    /* Gain mensuel = col 5 */
+    thead th:nth-child(5) {
+      color: var(--accent-text);
+      background: #EEF0FF;
+    }
+    tbody td:nth-child(5) {
+      background: #F5F7FF;
+      border-left: 1px solid #C7CCFF;
+    }
+    /* Prix client suggéré = col 6 (was 5, shifted by new col 3) */
+    thead th:nth-child(6) {
+      color: var(--green);
+      background: #EFF9F4;
+    }
+    tbody td:nth-child(6) {
+      background: #F4FCF7;
+      border-left: 2px solid #C5E8D5;
+      border-right: 2px solid #C5E8D5;
+    }
+    /* Client / poste = col 7 */
+    thead th:nth-child(7) {
+      color: var(--green);
+      background: #F4FCF7;
+      font-style: italic;
+      min-width: 120px;
+    }
+    tbody td:nth-child(7) {
+      background: #F9FDF9;
+      border-left: 1px solid #C5E8D5;
+      min-width: 120px;
+    }
+
+    /* ── NOTE ── */
+    /* ── RECO BAR ── */
+    .reco-bar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 198px; /* mis à jour dynamiquement par updateStickyTops() */
+      z-index: 70;
+    }
+
+    .reco-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px 40px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .reco-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .reco-icon { font-size: 18px; }
+
+    .reco-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-mid);
+      white-space: nowrap;
+    }
+
+    .reco-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 5px 10px;
+    }
+
+    .reco-input {
+      width: 64px;
+      border: none;
+      background: transparent;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      text-align: center;
+    }
+
+    .reco-unit {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-light);
+    }
+
+    .reco-result {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .reco-placeholder { font-size: 13px; color: var(--text-light); font-style: italic; }
+
+    .reco-calc {
+      font-size: 13px;
+      color: var(--text-mid);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 10px;
+    }
+
+    .reco-arrow { font-size: 16px; color: var(--text-light); }
+
+    .reco-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 8px;
+      padding: 5px 14px;
+    }
+
+    .reco-badge-custom {
+      background: var(--gold);
+    }
+
+    /* ── DEVIS FAB ── */
+    .devis-fab {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      padding: 14px 24px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(52,82,255,0.4);
+      z-index: 200;
+      font-family: 'Inter', sans-serif;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .devis-fab:hover { transform: translateY(-2px); box-shadow: 0 6px 28px rgba(52,82,255,0.5); }
+
+    /* ── DEVIS OVERLAY ── */
+    .devis-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 300;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .devis-overlay.open { display: flex; }
+
+    .devis-modal {
+      background: #fff;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 1100px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+
+    .devis-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 28px;
+      border-bottom: 1px solid var(--border);
+      background: #fff;
+      flex-shrink: 0;
+      z-index: 1;
+    }
+    .devis-modal-title { font-size: 18px; font-weight: 800; color: var(--text); }
+    .devis-close { background: none; border: none; font-size: 18px; cursor: pointer; color: var(--text-light); padding: 4px 8px; border-radius: 6px; }
+    .devis-close:hover { background: var(--bg); }
+
+    .devis-modal-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .devis-form {
+      padding: 24px 28px;
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      height: 100%;
+    }
+
+    .devis-section-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-bottom: 12px;
+    }
+
+    /* ── BLOCS PARTIE (partenaire / client) ── */
+    .dv-partie {
+      border-radius: 12px;
+      border: 2px solid var(--border);
+      overflow: hidden;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .dv-partie-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.1px;
+      border-bottom: 2px solid transparent;
+    }
+    .dv-partie-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+    }
+    .dv-partie-body {
+      padding: 14px 16px 6px;
+    }
+    /* Partenaire = bleu */
+    .dv-partie--partenaire { border-color: rgba(52,82,255,0.35); }
+    .dv-partie--partenaire .dv-partie-header {
+      background: linear-gradient(90deg, #EEF0FF 0%, #F4F6FF 100%);
+      color: var(--accent-text);
+      border-bottom-color: rgba(52,82,255,0.2);
+    }
+    .dv-partie--partenaire .dv-partie-icon { background: var(--accent); color: #fff; }
+    .dv-partie--partenaire .dv-partie-body { background: #FAFBFF; }
+    /* Client = vert */
+    .dv-partie--client { border-color: rgba(24,165,88,0.35); }
+    .dv-partie--client .dv-partie-header {
+      background: linear-gradient(90deg, #E8F7EF 0%, #F2FBF6 100%);
+      color: #0F7A3E;
+      border-bottom-color: rgba(24,165,88,0.2);
+    }
+    .dv-partie--client .dv-partie-icon { background: var(--green); color: #fff; }
+    .dv-partie--client .dv-partie-body { background: #FAFDFB; }
+
+    .devis-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .devis-field { display: flex; flex-direction: column; gap: 5px; }
+    .devis-field label { font-size: 12px; font-weight: 600; color: var(--text-mid); }
+    .devis-field input {
+      padding: 8px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background: var(--bg-card);
+      outline: none;
+    }
+    .devis-field input:focus { border-color: var(--accent); background: #fff; }
+
+    /* packs checkboxes */
+    .devis-packs { display: flex; flex-direction: column; gap: 8px; }
+    .devis-pack-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      background: var(--bg-card);
+    }
+    .devis-pack-item:hover { border-color: var(--accent); }
+    .devis-pack-item.selected { border-color: var(--accent); background: var(--accent-light); }
+    .devis-pack-item input[type=checkbox] { accent-color: var(--accent); width: 16px; height: 16px; cursor: pointer; }
+    .devis-pack-label { flex: 1; font-size: 13px; font-weight: 600; color: var(--text); }
+    .devis-pack-price { font-size: 13px; font-weight: 700; color: var(--accent); }
+
+    /* aperçu */
+    .devis-preview-wrap {
+      padding: 24px 28px;
+      overflow-y: auto;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .devis-preview-wrap .devis-section-title { flex-shrink: 0; }
+    #devisPreview { flex: 1; overflow-y: auto; }
+    .devis-preview {
+      background: var(--bg-card);
+      border-radius: 10px;
+      padding: 20px;
+      font-size: 12px;
+      min-height: 300px;
+      border: 1px solid var(--border);
+    }
+
+    .devis-actions { display: flex; gap: 10px; margin-top: 16px; }
+    .btn-devis-print, .btn-devis-pdf {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: opacity 0.15s;
+    }
+    .btn-devis-print { background: var(--bg); color: var(--text); border: 1.5px solid var(--border); }
+    .btn-devis-pdf   { background: var(--accent); color: #fff; }
+    .btn-devis-print:hover, .btn-devis-pdf:hover { opacity: 0.85; }
+
+    /* ── DEVIS BILLING ROW ── */
+    .devis-billing-row { display:flex; align-items:center; gap:10px; padding:10px 0 14px; }
+    .devis-billing-label { font-size:12px; font-weight:600; color:var(--text-mid); }
+    .devis-billing-toggle { display:flex; border:1.5px solid var(--accent); border-radius:8px; overflow:hidden; }
+    .dv-btn-billing { padding:5px 14px; border:none; background:transparent; font-size:12px; font-weight:600; cursor:pointer; color:var(--accent); transition:all 0.15s; font-family:inherit; }
+    .dv-btn-billing.active { background:var(--accent); color:#fff; }
+
+    /* ── DEVIS PACK QTY ── */
+    .devis-pack-item { display:flex; align-items:center; gap:8px; padding:9px 12px; }
+    .dv-qty-wrap { display:none; align-items:center; gap:3px; }
+    .dv-qty-wrap.visible { display:flex; }
+    .dv-qty { width:42px; padding:3px 5px; border:1.5px solid var(--accent); border-radius:6px; font-size:12px; font-weight:700; text-align:center; color:var(--accent); font-family:inherit; }
+    .dv-qty:focus { outline:none; }
+    .dv-qty-x { font-size:10px; color:var(--text-light); font-weight:700; }
+
+    /* ── DEVIS SUR MESURE ── */
+    .dv-sm-container { display:flex; flex-direction:column; gap:5px; margin-bottom:6px; }
+    .dv-sm-header { display:grid; grid-template-columns:1fr 40px 78px 52px 24px; gap:5px; padding:0 0 2px; }
+    .dv-sm-header span { font-size:10px; font-weight:700; color:var(--text-light); text-transform:uppercase; letter-spacing:0.4px; }
+    .dv-ligne-sm { display:grid; grid-template-columns:1fr 40px 78px 52px 24px; gap:5px; align-items:center; }
+    .dv-ligne-sm input { padding:5px 7px; border:1.5px solid var(--border); border-radius:6px; font-size:12px; background:var(--white); width:100%; font-family:inherit; }
+    .dv-ligne-sm input:focus { border-color:var(--accent); outline:none; }
+    .dv-sm-prix { color:var(--accent); font-weight:700 !important; }
+    .dv-sm-remove { background:none; border:none; color:var(--text-light); cursor:pointer; font-size:16px; padding:0 2px; border-radius:4px; line-height:1; font-family:inherit; }
+    .dv-sm-remove:hover { color:#e53e3e; }
+    .dv-add-ligne { width:100%; padding:7px; border:1.5px dashed var(--border); background:transparent; border-radius:8px; font-size:12px; font-weight:600; color:var(--text-mid); cursor:pointer; transition:all 0.15s; font-family:inherit; }
+    .dv-add-ligne:hover { border-color:var(--accent); color:var(--accent); }
+
+    /* ── DEVIS FIELD CHECK ── */
+    .dv-field-check { justify-content:center !important; }
+    .dv-check-label { display:flex; align-items:center; gap:7px; cursor:pointer; font-size:12px; font-weight:600; color:var(--text-mid); margin-top:14px; }
+    .dv-check-label input[type=checkbox] { accent-color:var(--accent); width:15px; height:15px; flex-shrink:0; }
+
+    /* ── PRINT STYLES ── */
+    @media print {
+      body > *:not(#printDevis) { display: none !important; }
+      #printDevis { display: block !important; padding: 0; margin: 0; }
+      @page { margin: 20mm; size: A4; }
+    }
+    #printDevis { display: none; }
+
+    /* ── RECOMMENDED ROW HIGHLIGHT ── */
+    .row-recommended {
+      box-shadow: inset 5px 0 0 var(--accent);
+      background: #EEF1FF !important;
+      outline: 2px solid rgba(52,82,255,0.25);
+      outline-offset: -1px;
+    }
+
+    .row-recommended td {
+      font-weight: 700 !important;
+    }
+
+    .row-recommended td:nth-child(2) {
+      background: #DDE3FF !important;
+    }
+
+    .row-recommended td:nth-child(3) {
+      background: #E5E9FF !important;
+    }
+
+    .row-recommended td:nth-child(6) {
+      background: #C8EFDA !important;
+    }
+
+    .row-recommended td:nth-child(7) {
+      background: #D4F2E3 !important;
+    }
+
+    .reco-star {
+      font-size: 10px;
+      font-weight: 700;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 4px;
+      padding: 2px 5px;
+      letter-spacing: 0.3px;
+      vertical-align: middle;
+      margin-left: 4px;
+    }
+
+    /* ── NOTE ── */
+    .note-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      margin-top: 0;
+      font-size: 13px;
+      color: var(--text-mid);
+    }
+
+    .note-box .note-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+    /* ── INLINE CALC ROW ── */
+    .calc-inline-row {
+      border-top: 1.5px dashed var(--border) !important;
+      background: var(--bg-card) !important;
+    }
+
+    .calc-inline-row:hover { background: var(--bg-card) !important; }
+
+    .inline-hours-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .inline-hours-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    .inline-hours-input {
+      width: 80px;
+      padding: 7px 10px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      text-align: center;
+      outline: none;
+      font-family: 'Inter', sans-serif;
+      background: var(--white);
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .inline-hours-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(52,82,255,0.1);
+    }
+
+    .inline-hours-input::placeholder {
+      color: var(--border);
+      font-weight: 500;
+    }
+
+    .ic-empty {
+      font-size: 13px;
+      color: var(--border);
+      font-weight: 500;
+    }
+
+    /* ── CTA BLOCK ── */
+    .custom-offer {
+      background: var(--text);
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .custom-offer-text { color: white; }
+    .custom-offer-text h3 { font-size: 18px; font-weight: 800; margin-bottom: 4px; letter-spacing: -0.3px; }
+    .custom-offer-text p  { font-size: 13px; color: rgba(255,255,255,0.55); }
+
+    .btn-contact {
+      background: var(--white);
+      color: var(--text);
+      border: none;
+      padding: 10px 22px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .btn-contact:hover {
+      background: var(--accent);
+      color: var(--white);
+      transform: translateY(-1px);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--text);
+      color: rgba(255,255,255,0.4);
+      text-align: center;
+      padding: 20px 32px;
+      font-size: 12px;
+    }
+
+    footer strong { color: rgba(255,255,255,0.8); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .header-inner, .sim-inner, .tab-nav-inner, main { padding-left: 20px; padding-right: 20px; }
+      .sim-info { display: none; }
+      thead th, tbody td { padding: 10px 12px; }
+      thead th:first-child, tbody td:first-child { padding-left: 16px; }
+      .table-title { padding: 16px 16px 12px; }
+      .section-title { font-size: 20px; }
+    }
+
+    @media (max-width: 640px) {
+      table { font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════ HEADER ═══════════════════ -->
+<header>
+  <div class="header-inner">
+    <a class="logo" href="#">
+      <img src="fairwai_logo.svg" alt="fairwai" class="logo-img" />
+    </a>
+    <div class="header-title">Simulateur Tarifaire <span>Marque Blanche</span></div>
+    <span class="header-badge">Espace Partenaires</span>
+  </div>
+</header>
+
+<!-- ═══════════════════ TAB NAV ═══════════════════ -->
+<div class="tab-nav">
+  <div class="tab-nav-inner">
+    <button id="tab360" class="tab-btn t360 active" onclick="switchTab('360')">
+      <span class="tab-btn-icon">🎯</span>
+      <span class="tab-btn-text">
+        <span class="tab-btn-title">Fairwai 360</span>
+        <span class="tab-btn-sub">Visio · Téléphonie · Présentiel</span>
+      </span>
+    </button>
+    <button id="tabVoice" class="tab-btn tvoice" onclick="switchTab('voice')">
+      <span class="tab-btn-icon">📞</span>
+      <span class="tab-btn-text">
+        <span class="tab-btn-title">Fairwai Voice</span>
+        <span class="tab-btn-sub">Téléphonie uniquement</span>
+      </span>
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════ SIMULATEUR BAR ═══════════════════ -->
+<div class="sim-bar">
+  <div class="sim-inner">
+    <span class="sim-label">🧮 Simulateur de marge</span>
+    <div class="sim-controls">
+      <div class="margin-input-wrap">
+        <label for="marginRange">Votre marge :</label>
+        <input type="range" id="marginRange" class="margin-range" min="0" max="100" value="40" step="1" />
+        <input type="number" id="marginNum" class="margin-num" value="40" min="0" max="100" />
+        <span style="font-size:14px;font-weight:700;color:var(--grey-600)">%</span>
+      </div>
+    </div>
+    <div class="sim-info">
+      Prix de vente = Prix achat × <span id="simFormula">1,40</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ RECO BAR ═══════════════════ -->
+<div class="reco-bar">
+  <div class="reco-inner">
+    <div class="reco-left">
+      <div class="toggle-billing" style="margin-right:24px;">
+        <button class="btn-period btn-mensuel" onclick="setBilling('mensuel')">Mensuel</button>
+        <button class="btn-period btn-annuel active" onclick="setBilling('annuel')">Annuel</button>
+      </div>
+      <span class="reco-icon">🏢</span>
+      <span class="reco-label">Nombre de postes chez le client</span>
+      <div class="reco-input-wrap">
+        <input type="number" id="recoPostes" class="reco-input" min="1" max="999" placeholder="ex : 10"
+          oninput="updateRecommendation(this.value)" />
+        <span class="reco-unit">postes</span>
+      </div>
+    </div>
+    <div class="reco-result" id="recoResult">
+      <span class="reco-placeholder">Entrez un nombre de postes pour voir le pack recommandé</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ MAIN ═══════════════════ -->
+<main>
+
+  <!-- ══════════ PAGE FAIRWAY 360 ══════════ -->
+  <div id="page-360" class="tab-page active">
+
+    <div class="section-header">
+      <div>
+        <div class="section-title">Fairwai 360</div>
+        <div class="section-subtitle">Visioconférence · Téléphonie · Présentiel</div>
+      </div>
+    </div>
+
+    <!-- Forfaits standards -->
+    <div class="table-wrap">
+      <div class="table-title">
+        Licence Partagée — Forfaits horaires <span style="font-size:12px;font-weight:500;color:var(--text-light);">(nb d'utilisateurs illimité)</span>
+        <span class="table-title-badge">3 paliers standards</span>
+      </div>
+      <table id="table360">
+        <thead>
+          <tr>
+            <th>Palier</th>
+            <th>Prix d'achat Revendeurs</th>
+            <th>Achat / poste</th>
+            <th>Prix de vente <span id="marginLabel360" style="text-transform:none;font-weight:800;color:var(--accent-dark)">(+40%)</span></th>
+            <th>Gain mensuel</th>
+            <th>Prix client suggéré</th>
+            <th>Client / poste</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="note-box" style="margin:16px 28px 20px;">
+        <span class="note-icon">ℹ️</span>
+        <span>Possibilité de moduler le forfait à la hausse et d'ajouter des heures supplémentaires en cours de mois au prix de l'heure du forfait correspondant.</span>
+      </div>
+    </div>
+
+    <!-- Licence Executive Illimitée -->
+    <div class="licence-cards" id="licenceExec"></div>
+
+    <!-- CTA -->
+    <div class="custom-offer">
+      <div class="custom-offer-text">
+        <h3>Besoin d'une offre sur mesure ?</h3>
+        <p>Au-delà de 500h ou pour un besoin spécifique, nos équipes construisent une offre personnalisée adaptée à vos clients.</p>
+      </div>
+      <button class="btn-contact" onclick="window.location.href='mailto:contact@fairw.ai'">
+        📩 Contacter l'équipe commerciale
+      </button>
+    </div>
+
+  </div><!-- /page-360 -->
+
+  <!-- ══════════ PAGE FAIRWAY VOICE ══════════ -->
+  <div id="page-voice" class="tab-page">
+
+    <div class="section-header">
+      <div>
+        <div class="section-title">Fairwai Voice</div>
+        <div class="section-subtitle">Téléphonie uniquement</div>
+      </div>
+    </div>
+
+    <!-- Licence Partagée -->
+    <div class="table-wrap">
+      <div class="table-title">
+        Licence Partagée — Forfaits horaires <span style="font-size:12px;font-weight:500;color:var(--text-light);">(nb d'utilisateurs illimité)</span>
+        <span class="table-title-badge">3 paliers standards</span>
+      </div>
+      <table id="tableVoice">
+        <thead>
+          <tr>
+            <th>Palier</th>
+            <th>Prix d'achat Revendeurs</th>
+            <th>Achat / poste</th>
+            <th>Prix de vente <span id="marginLabelVoice" style="text-transform:none;font-weight:800;color:var(--accent-dark)">(+40%)</span></th>
+            <th>Gain mensuel</th>
+            <th>Prix client suggéré</th>
+            <th>Client / poste</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="note-box" style="margin:16px 28px 20px;">
+        <span class="note-icon">ℹ️</span>
+        <span>Possibilité de moduler le forfait à la hausse et d'ajouter des heures supplémentaires en cours de mois au prix de l'heure du forfait correspondant.</span>
+      </div>
+    </div>
+
+    <!-- Licence Individuelle Illimitée -->
+    <div class="licence-cards" id="licenceVoice"></div>
+
+    <!-- CTA -->
+    <div class="custom-offer">
+      <div class="custom-offer-text">
+        <h3>Besoin d'une offre sur mesure ?</h3>
+        <p>Au-delà de 500h ou pour un besoin spécifique, nos équipes construisent une offre personnalisée adaptée à vos clients.</p>
+      </div>
+      <button class="btn-contact" onclick="window.location.href='mailto:contact@fairw.ai'">
+        📩 Contacter l'équipe commerciale
+      </button>
+    </div>
+
+  </div><!-- /page-voice -->
+
+</main>
+
+<!-- ═══════════════════ BOUTON DEVIS FLOTTANT ═══════════════════ -->
+<button class="devis-fab" onclick="openDevis()">📄 Générer un devis</button>
+
+<!-- ═══════════════════ MODAL DEVIS ═══════════════════ -->
+<div class="devis-overlay" id="devisOverlay" onclick="closeDevisOverlay(event)">
+  <div class="devis-modal">
+    <div class="devis-modal-header">
+      <div class="devis-modal-title">📄 Générer un devis client</div>
+      <button class="devis-close" onclick="closeDevis()">✕</button>
+    </div>
+    <div class="devis-modal-body">
+
+      <!-- Colonne gauche : formulaire -->
+      <div class="devis-form">
+
+        <!-- PARTENAIRE -->
+        <div class="dv-partie dv-partie--partenaire">
+          <div class="dv-partie-header">
+            <span class="dv-partie-icon">🤝</span>
+            Partenaire / Revendeur
+          </div>
+          <div class="dv-partie-body">
+            <div class="devis-row">
+              <div class="devis-field">
+                <label>Société</label>
+                <input type="text" id="dv-partenaire-societe" placeholder="Nom de la société" oninput="updateDevisPreview()" />
+              </div>
+              <div class="devis-field">
+                <label>Nom du contact</label>
+                <input type="text" id="dv-partenaire-contact" placeholder="Prénom Nom" oninput="updateDevisPreview()" />
+              </div>
+            </div>
+            <div class="devis-row">
+              <div class="devis-field">
+                <label>Email</label>
+                <input type="email" id="dv-partenaire-email" placeholder="contact@société.fr" oninput="updateDevisPreview()" />
+              </div>
+              <div class="devis-field">
+                <label>Téléphone</label>
+                <input type="tel" id="dv-partenaire-tel" placeholder="+33 6 00 00 00 00" oninput="updateDevisPreview()" />
+              </div>
+            </div>
+            <div class="devis-row">
+              <div class="devis-field">
+                <label>SIRET</label>
+                <input type="text" id="dv-partenaire-siret" placeholder="12345678900010" oninput="updateDevisPreview()" />
+              </div>
+              <div class="devis-field">
+                <label>N° TVA</label>
+                <input type="text" id="dv-partenaire-tva" placeholder="FR00123456789" oninput="updateDevisPreview()" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CLIENT -->
+        <div class="dv-partie dv-partie--client">
+          <div class="dv-partie-header">
+            <span class="dv-partie-icon">🏢</span>
+            Client
+          </div>
+          <div class="dv-partie-body">
+            <div class="devis-row">
+              <div class="devis-field">
+                <label>Société</label>
+                <input type="text" id="dv-client-societe" placeholder="Nom de la société" oninput="updateDevisPreview()" />
+              </div>
+              <div class="devis-field">
+                <label>Nom du contact</label>
+                <input type="text" id="dv-client-contact" placeholder="Prénom Nom" oninput="updateDevisPreview()" />
+              </div>
+            </div>
+            <div class="devis-row">
+              <div class="devis-field">
+                <label>Email</label>
+                <input type="email" id="dv-client-email" placeholder="contact@société.fr" oninput="updateDevisPreview()" />
+              </div>
+              <div class="devis-field">
+                <label>Téléphone</label>
+                <input type="tel" id="dv-client-tel" placeholder="+33 6 00 00 00 00" oninput="updateDevisPreview()" />
+              </div>
+            </div>
+            <div class="devis-row">
+              <div class="devis-field">
+                <label>SIRET</label>
+                <input type="text" id="dv-client-siret" placeholder="12345678900010" oninput="updateDevisPreview()" />
+              </div>
+              <div class="devis-field">
+                <label>N° TVA</label>
+                <input type="text" id="dv-client-tva" placeholder="FR00123456789" oninput="updateDevisPreview()" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DEVIS INFO -->
+        <div class="devis-section-title" style="margin-top:14px;">Informations devis</div>
+        <div class="devis-row">
+          <div class="devis-field">
+            <label>Numéro de devis</label>
+            <input type="text" id="dv-numero" oninput="updateDevisPreview()" />
+          </div>
+          <div class="devis-field">
+            <label>Date</label>
+            <input type="date" id="dv-date" onchange="updateDevisPreview()" />
+          </div>
+        </div>
+        <div class="devis-row">
+          <div class="devis-field">
+            <label>Remise client (%)</label>
+            <input type="number" id="dv-remise" value="0" min="0" max="100" oninput="updateDevisPreview()" />
+          </div>
+          <div class="devis-field dv-field-check">
+            <label class="dv-check-label">
+              <input type="checkbox" id="dv-hide-fairwai" onchange="updateDevisPreview()">
+              Masquer fairw.ai sur le devis
+            </label>
+          </div>
+        </div>
+
+        <!-- FACTURATION -->
+        <div class="devis-billing-row">
+          <span class="devis-billing-label">Facturation</span>
+          <div class="devis-billing-toggle">
+            <button class="dv-btn-billing active" id="dv-billing-annuel" onclick="setDevisBilling('annuel')">Annuel</button>
+            <button class="dv-btn-billing" id="dv-billing-mensuel" onclick="setDevisBilling('mensuel')">Mensuel</button>
+          </div>
+        </div>
+
+        <!-- OFFRES -->
+        <div class="devis-section-title">Offres</div>
+        <div class="devis-packs" id="devisPacks"></div>
+
+        <!-- LIGNES PERSONNALISÉES -->
+        <div class="devis-section-title" style="margin-top:14px;">Lignes personnalisées</div>
+        <div class="dv-sm-header">
+          <span>Description</span><span style="text-align:center;">Qté</span><span style="text-align:right;">Prix HT</span><span>Unité</span><span></span>
+        </div>
+        <div id="devisSurMesure" class="dv-sm-container"></div>
+        <button class="dv-add-ligne" onclick="addLigneSurMesure()">+ Ajouter une ligne</button>
+
+      </div>
+
+      <!-- Colonne droite : aperçu -->
+      <div class="devis-preview-wrap">
+        <div class="devis-section-title">Aperçu</div>
+        <div class="devis-preview" id="devisPreview"></div>
+        <div class="devis-actions">
+          <button class="btn-devis-print" onclick="imprimerDevis()">🖨️ Imprimer</button>
+          <button class="btn-devis-pdf" onclick="telechargerPDF()">⬇️ Télécharger PDF</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ PRINT DEVIS ═══════════════════ -->
+<div id="printDevis"></div>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer>
+  <strong>fairw.ai</strong> — Espace Partenaires · Tarifs HT · Document confidentiel réservé aux partenaires agréés
+</footer>
+
+<!-- ═══════════════════ SCRIPT ═══════════════════ -->
+<script>
+  // ── DATA ──────────────────────────────────────────────
+  const data360 = [
+    { palier: '15 h', mensuelAchat: 21.00, annuelAchat: 18.00,  hMensuel: 1.40, hAnnuel: 1.190, clientMensuel: 29.00, clientAnnuel: 24.90 },
+    { palier: '30 h', mensuelAchat: 42.00, annuelAchat: 35.00,  hMensuel: 1.40, hAnnuel: 1.190, clientMensuel: 59.00, clientAnnuel: 49.90 },
+    { palier: '50 h', mensuelAchat: 64.00, annuelAchat: 55.00,  hMensuel: 1.28, hAnnuel: 1.088, clientMensuel: 89.00, clientAnnuel: 75.00 },
+  ];
+
+  // Paliers >50h Fairwai 360 : heures × tarif horaire du palier
+  // clientHMensuel/clientHAnnuel = tarif horaire client de référence (issu du tableau tarifaire)
+  const tiers360 = [
+    { label: '75 h',  min: 51,  max: 75,  mensuelAchat: 89.00,  annuelAchat: 75.65,  hMensuel: 1.187, hAnnuel: 1.009, clientHMensuel: 1.6613, clientHAnnuel: 1.4121 },
+    { label: '100 h', min: 76,  max: 100, mensuelAchat: 119.00, annuelAchat: 101.15, hMensuel: 1.190, hAnnuel: 1.012, clientHMensuel: 1.6660, clientHAnnuel: 1.4161 },
+    { label: '200 h', min: 101, max: 200, mensuelAchat: 233.33, annuelAchat: 198.33, hMensuel: 1.167, hAnnuel: 0.992, clientHMensuel: 1.6334, clientHAnnuel: 1.3884 },
+    { label: '500 h', min: 201, max: 500, mensuelAchat: 572.50, annuelAchat: 486.63, hMensuel: 1.145, hAnnuel: 0.973, clientHMensuel: 1.6030, clientHAnnuel: 1.3626 },
+  ];
+
+  const dataVoice = [
+    { palier: '15 h', mensuelAchat: 10.50, annuelAchat:  9.00, hMensuel: 0.700, hAnnuel: 0.595, clientMensuel: 14.50, clientAnnuel: 12.45 },
+    { palier: '30 h', mensuelAchat: 21.00, annuelAchat: 17.50, hMensuel: 0.700, hAnnuel: 0.595, clientMensuel: 29.50, clientAnnuel: 24.95 },
+    { palier: '50 h', mensuelAchat: 32.00, annuelAchat: 27.50, hMensuel: 0.640, hAnnuel: 0.544, clientMensuel: 44.50, clientAnnuel: 37.50 },
+  ];
+
+  // Paliers >50h Fairwai Voice : heures × tarif horaire du palier
+  const tiersVoice = [
+    { label: '75 h',  min: 51,  max: 75,  mensuelAchat: 44.50,  annuelAchat: 37.83, hMensuel: 0.593, hAnnuel: 0.504, clientHMensuel: 0.8307, clientHAnnuel: 0.7061 },
+    { label: '100 h', min: 76,  max: 100, mensuelAchat: 59.50,  annuelAchat: 50.58, hMensuel: 0.595, hAnnuel: 0.506, clientHMensuel: 0.8330, clientHAnnuel: 0.7081 },
+    { label: '200 h', min: 101, max: 200, mensuelAchat: 116.67, annuelAchat: 99.17, hMensuel: 0.583, hAnnuel: 0.496, clientHMensuel: 0.8167, clientHAnnuel: 0.6942 },
+    { label: '500 h', min: 201, max: 500, mensuelAchat: 286.25, annuelAchat: 243.31, hMensuel: 0.573, hAnnuel: 0.487, clientHMensuel: 0.8015, clientHAnnuel: 0.6813 },
+  ];
+
+  const licenceExec = {
+    name: 'Licence Executive Illimitée <span style="font-size:12px;font-weight:500;color:var(--text-light);">(individuelle)</span>',
+    note: '★ Fair use 60h/mois inclus',
+    mensuelAchat: 35.00, annuelAchat: 29.75,
+    clientMensuel: 49.00, clientAnnuel: 39.90
+  };
+
+  const licenceVoiceInd = {
+    name: 'Licence Individuelle Illimitée',
+    note: '★ Fair use 60h/mois',
+    mensuelAchat: 17.50, annuelAchat: 14.88,
+    clientMensuel: 24.90, clientAnnuel: 19.90
+  };
+
+  // ── STATE ─────────────────────────────────────────────
+  let margin = 40;
+  let billing = 'annuel';   // défaut annuel
+  let currentPostes = null; // nombre de postes saisi par le partenaire
+
+  // ── UTILS ─────────────────────────────────────────────
+  const fmt = (v) => v.toFixed(2).replace('.', ',') + ' €';
+  const fmtH = (v) => v.toFixed(2).replace('.', ',') + ' €/h';
+  const sell = (purchase) => purchase * (1 + margin / 100);
+  const gain = (purchase) => sell(purchase) - purchase;
+
+  // Arrondit vers le prochain prix "vendeur" : chiffre rond (X,00) ou X,90
+  // Toujours ≥ au prix calculé pour rester rentable
+  function prixCommercial(p) {
+    const floor = Math.floor(p);
+    const frac  = p - floor;
+    if (frac < 0.001)  return p;           // déjà un chiffre rond
+    if (Math.abs(frac - 0.90) < 0.001) return p; // déjà en X,90
+    const candidate90 = floor + 0.90;
+    return candidate90 >= p ? candidate90 : floor + 1;
+  }
+
+  // ── RENDER TABLE ──────────────────────────────────────
+  function renderTable(tableId, data) {
+    const tiersMap  = { table360: tiers360, tableVoice: tiersVoice };
+    const modeMap   = { table360: '360',    tableVoice: 'voice'   };
+    const prefixMap = { table360: 'Pack 360', tableVoice: 'Pack Voice' };
+    const packPrefix = prefixMap[tableId];
+    const tbody = document.querySelector(`#${tableId} tbody`);
+
+    // Preserve current inline calc hours value if row already exists
+    const existingInput = tbody.querySelector('.inline-hours-input');
+    const savedHours = existingInput ? existingInput.value : '';
+
+    tbody.innerHTML = '';
+
+    // Data rows
+    data.forEach(row => {
+      const achat      = billing === 'annuel' ? row.annuelAchat  : row.mensuelAchat;
+      const hRate      = billing === 'annuel' ? row.hAnnuel      : row.hMensuel;
+      const clientBase = billing === 'annuel' ? row.clientAnnuel : row.clientMensuel;
+      const sellP    = sell(achat);
+      const gainP    = gain(achat);
+      const client   = prixCommercial(clientBase * (1 + margin / 100) / 1.4);
+      const packCap  = Math.floor(parseInt(row.palier) / 3); // capacité théorique du pack
+      const divisor  = currentPostes || packCap;             // postes saisis ou capacité pack
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>
+          <span class="palier-badge">${packPrefix} ${row.palier.replace(' h','h')}</span>
+          <div style="font-size:11px;color:var(--text-light);margin-top:4px;">≈ ${packCap} postes</div>
+        </td>
+        <td>
+          <div style="font-size:16px;font-weight:800;color:var(--black)">${fmt(achat)}</div>
+        </td>
+        <td>
+          <div style="font-size:15px;font-weight:700;color:var(--text-mid)">${fmt(achat / divisor)}</div>
+          <div style="font-size:11px;color:var(--text-light);margin-top:2px;">${currentPostes ? `pour ${currentPostes} postes` : '/ poste / mois'}</div>
+        </td>
+        <td>
+          <div class="price-sell">${fmt(sellP)}</div>
+        </td>
+        <td>
+          <div style="font-size:15px;font-weight:800;color:var(--accent)">${fmt(gainP)}</div>
+          <div style="font-size:11px;color:var(--text-light)">marge brute</div>
+        </td>
+        <td>
+          <div style="font-size:16px;font-weight:800;color:var(--green)">${fmt(client)}</div>
+          <div style="font-size:11px;color:var(--green);opacity:0.7;">tarif indicatif</div>
+        </td>
+        <td>
+          <div style="font-size:15px;font-weight:700;color:var(--green)">${fmt(client / divisor)}</div>
+          <div style="font-size:11px;color:var(--green);opacity:0.7;margin-top:2px;">${currentPostes ? `pour ${currentPostes} postes` : '/ poste / mois'}</div>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    // Inline calc row
+    const calcTr = document.createElement('tr');
+    calcTr.className = 'calc-inline-row';
+    calcTr.innerHTML = `
+      <td>
+        <div class="inline-hours-wrap">
+          <span class="inline-hours-label">Sur mesure</span>
+          <input type="number" class="inline-hours-input" placeholder="ex: 80" min="51" max="500"
+            value="${savedHours}"
+            oninput="updateInlineCalc('${tableId}', this.value)" />
+          <span style="font-size:11px;color:var(--text-light);font-weight:600;">h</span>
+        </div>
+      </td>
+      <td class="ic-achat"><span class="ic-empty">—</span></td>
+      <td class="ic-achat-poste"><span class="ic-empty">—</span></td>
+      <td class="ic-sell"><span class="ic-empty">—</span></td>
+      <td class="ic-gain"><span class="ic-empty">—</span></td>
+      <td class="ic-client"><span class="ic-empty">—</span></td>
+      <td class="ic-client-poste"><span class="ic-empty">—</span></td>
+    `;
+    tbody.appendChild(calcTr);
+
+    // Restore calc if value was entered
+    if (savedHours) updateInlineCalc(tableId, savedHours);
+  }
+
+  // ── INLINE CALC ────────────────────────────────────────
+  function updateInlineCalc(tableId, val) {
+    const tiersMap = { table360: tiers360, tableVoice: tiersVoice };
+    const modeMap  = { table360: '360',    tableVoice: 'voice'   };
+    const tiersData = tiersMap[tableId];
+    const mode      = modeMap[tableId];
+    const tbody = document.querySelector(`#${tableId} tbody`);
+    const row   = tbody.querySelector('.calc-inline-row');
+    if (!row) return;
+
+    const hours = parseInt(val, 10);
+    const empty = s => `<span class="ic-empty">${s}</span>`;
+
+    const set = (cls, html) => { row.querySelector(cls).innerHTML = html; };
+
+    const allEmpty = () => ['ic-achat','ic-achat-poste','ic-sell','ic-gain','ic-client','ic-client-poste'].forEach(c => set('.'+c, empty('—')));
+
+    if (!val || isNaN(hours) || hours < 1) { allEmpty(); return; }
+    if (hours <= 50) {
+      set('.ic-achat', empty('↑ forfait standard'));
+      ['ic-achat-poste','ic-sell','ic-gain','ic-client','ic-client-poste'].forEach(c => set('.'+c, empty('—')));
+      return;
+    }
+    if (hours > 500) {
+      set('.ic-achat', `<span style="font-size:12px;color:var(--text-light);">Sur devis &gt; 500h</span>`);
+      ['ic-achat-poste','ic-sell','ic-gain','ic-client','ic-client-poste'].forEach(c => set('.'+c, empty('—')));
+      return;
+    }
+
+    // Palier contenant les heures saisies (min ≤ hours ≤ max)
+    const tier = tiersData.find(t => hours >= t.min && hours <= t.max);
+
+    if (!tier) {
+      set('.ic-achat', `<span style="font-size:12px;color:var(--text-light);">Hors palier</span>`);
+      ['ic-achat-poste','ic-sell','ic-gain','ic-client','ic-client-poste'].forEach(c => set('.'+c, empty('—')));
+      return;
+    }
+
+    // Prix = heures saisies × tarif horaire du palier
+    const hRate   = billing === 'annuel' ? tier.hAnnuel        : tier.hMensuel;
+    const clientH = billing === 'annuel' ? tier.clientHAnnuel  : tier.clientHMensuel;
+    const achat   = hours * hRate;
+    const clientBase = hours * clientH;
+    const sellP   = sell(achat);
+    const gainP   = gain(achat);
+    const postes  = currentPostes || (hours / 3);
+
+    set('.ic-achat',       `<div style="font-size:16px;font-weight:800;color:var(--black)">${fmt(achat)}</div><div style="font-size:11px;color:var(--text-light);margin-top:2px;">${hours}h × ${fmt(hRate).replace(' €','€')}/h</div>`);
+    set('.ic-achat-poste', `<div style="font-size:15px;font-weight:700;color:var(--text-mid)">${fmt(achat/postes)}</div><div style="font-size:11px;color:var(--text-light);margin-top:2px;">/ poste / mois</div>`);
+    set('.ic-sell',        `<div class="price-sell">${fmt(sellP)}</div>`);
+    set('.ic-gain',        `<div style="font-size:15px;font-weight:800;color:var(--accent)">${fmt(gainP)}</div><div style="font-size:11px;color:var(--text-light)">marge brute</div>`);
+    const clientSuggere      = prixCommercial(clientBase * (1 + margin / 100) / 1.4);
+    const clientSuggerePoste = clientSuggere / postes;
+    set('.ic-client',      `<div style="font-size:16px;font-weight:800;color:var(--green)">${fmt(clientSuggere)}</div><div style="font-size:11px;color:var(--green);opacity:0.7;">tarif indicatif</div>`);
+    set('.ic-client-poste',`<div style="font-size:15px;font-weight:700;color:var(--green)">${fmt(clientSuggerePoste)}</div><div style="font-size:11px;color:var(--green);opacity:0.7;margin-top:2px;">/ poste / mois</div>`);
+  }
+
+  // ── RENDER LICENCE CARD ───────────────────────────────
+  function renderLicenceCard(containerId, lic, cssClass) {
+    const container = document.getElementById(containerId);
+    const achat      = billing === 'mensuel' ? lic.mensuelAchat  : lic.annuelAchat;
+    const clientBase = billing === 'mensuel' ? lic.clientMensuel : lic.clientAnnuel;
+    const sellP  = sell(achat);
+    const gainP  = gain(achat);
+    const client = prixCommercial(clientBase * (1 + margin / 100) / 1.4);
+    container.innerHTML = `
+      <div class="licence-card ${cssClass}">
+        <div class="licence-name">${lic.name}</div>
+        <div class="licence-note">${lic.note}</div>
+        <div class="licence-prices">
+          <div class="lp-block lp-block-achat">
+            <div class="lp-label">Prix d'achat</div>
+            <div class="lp-value" style="color:var(--black)">${fmt(achat)}</div>
+            <div class="lp-sub" style="color:var(--text-light)">/ mois</div>
+          </div>
+          <div class="lp-block lp-block-sell">
+            <div class="lp-label" style="color:var(--accent-text)">Prix de vente</div>
+            <div class="lp-value" style="color:var(--accent)">${fmt(sellP)}</div>
+            <div class="lp-sub" style="color:var(--accent)">+${margin}%</div>
+          </div>
+          <div class="lp-block lp-block-gain">
+            <div class="lp-label" style="color:var(--accent-text)">Gain mensuel</div>
+            <div class="lp-value" style="color:var(--accent)">${fmt(gainP)}</div>
+            <div class="lp-sub" style="color:var(--accent)">marge brute</div>
+          </div>
+          <div class="lp-block lp-block-client">
+            <div class="lp-label" style="color:var(--green)">Prix client suggéré</div>
+            <div class="lp-value" style="color:var(--green)">${fmt(client)}</div>
+            <div class="lp-sub" style="color:var(--green)">tarif indicatif</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // ── HIGHLIGHT + BADGE (sans re-render) ───────────────
+  function applyHighlightAndBadge() {
+    document.querySelectorAll('.row-recommended').forEach(r => r.classList.remove('row-recommended'));
+    const result = document.getElementById('recoResult');
+
+    if (!currentPostes || currentPostes < 1) {
+      result.innerHTML = '<span class="reco-placeholder">Entrez un nombre de postes pour voir le pack recommandé</span>';
+      return;
+    }
+
+    const heures = currentPostes * 3;
+    let rowIndex, packLabel, isSurMesure = false;
+
+    if (heures <= 15)      { rowIndex = 0; packLabel = '15h'; }
+    else if (heures <= 30) { rowIndex = 1; packLabel = '30h'; }
+    else if (heures <= 50) { rowIndex = 2; packLabel = '50h'; }
+    else                   { rowIndex = 3; isSurMesure = true; }
+
+    ['table360', 'tableVoice'].forEach(tableId => {
+      const rows = Array.from(document.querySelectorAll(`#${tableId} tbody tr`));
+      if (rows[rowIndex]) rows[rowIndex].classList.add('row-recommended');
+    });
+
+    if (isSurMesure) {
+      document.querySelectorAll('.inline-hours-input').forEach(inp => {
+        inp.value = heures;
+        const tbl = inp.closest('table');
+        if (tbl) updateInlineCalc(tbl.id, heures);
+      });
+    }
+
+    const calcHtml  = `<span class="reco-calc">${currentPostes} poste${currentPostes > 1 ? 's' : ''} × 3h = ${heures}h/mois</span>`;
+    const arrowHtml = `<span class="reco-arrow">→</span>`;
+    const badgeHtml = isSurMesure
+      ? `<span class="reco-badge reco-badge-custom">🎯 Sur mesure — ${heures}h/mois</span>`
+      : `<span class="reco-badge">⭐ Pack ${packLabel} recommandé</span>`;
+
+    result.innerHTML = calcHtml + arrowHtml + badgeHtml;
+  }
+
+  // ── RECOMMENDATION (entry point depuis le HTML) ───────
+  function updateRecommendation(val) {
+    const p = parseInt(val, 10);
+    currentPostes = (p && p > 0) ? p : null;
+    // Re-render les tableaux avec le nouveau diviseur, puis applique highlight
+    renderTable('table360', data360);
+    renderTable('tableVoice', dataVoice);
+    applyHighlightAndBadge();
+  }
+
+  // ── UPDATE ALL ────────────────────────────────────────
+  function updateAll() {
+    const mult = (1 + margin / 100).toFixed(2).replace('.', ',');
+    document.getElementById('simFormula').textContent = mult;
+    document.getElementById('marginLabel360').textContent   = `(+${margin}%)`;
+    document.getElementById('marginLabelVoice').textContent = `(+${margin}%)`;
+
+    renderTable('table360', data360);
+    renderTable('tableVoice', dataVoice);
+    renderLicenceCard('licenceExec',  licenceExec,     'exec');
+    renderLicenceCard('licenceVoice', licenceVoiceInd, 'voice-ind');
+    applyHighlightAndBadge();
+  }
+
+  // ── EVENTS ────────────────────────────────────────────
+  document.getElementById('marginRange').addEventListener('input', (e) => {
+    margin = parseInt(e.target.value, 10);
+    document.getElementById('marginNum').value = margin;
+    updateAll();
+  });
+
+  document.getElementById('marginNum').addEventListener('input', (e) => {
+    let v = parseInt(e.target.value, 10);
+    if (isNaN(v)) return;
+    v = Math.max(0, Math.min(100, v));
+    margin = v;
+    document.getElementById('marginRange').value = v;
+    updateAll();
+  });
+
+  function setBilling(type) {
+    billing = type;
+    document.querySelectorAll('.btn-mensuel').forEach(b => b.classList.toggle('active', type === 'mensuel'));
+    document.querySelectorAll('.btn-annuel').forEach(b => b.classList.toggle('active', type === 'annuel'));
+    updateAll();
+  }
+
+  // ── TAB SWITCHING ─────────────────────────────────────
+  function switchTab(tab) {
+    document.getElementById('page-360').classList.toggle('active', tab === '360');
+    document.getElementById('page-voice').classList.toggle('active', tab === 'voice');
+    document.getElementById('tab360').classList.toggle('active', tab === '360');
+    document.getElementById('tabVoice').classList.toggle('active', tab === 'voice');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── STICKY POSITIONS ──────────────────────────────────
+  function updateStickyTops() {
+    const header  = document.querySelector('header');
+    const tabNav  = document.querySelector('.tab-nav');
+    const simBar  = document.querySelector('.sim-bar');
+    const recoBar = document.querySelector('.reco-bar');
+    const h1 = header.offsetHeight;
+    const h2 = tabNav.offsetHeight;
+    const h3 = simBar.offsetHeight;
+    tabNav.style.top  = h1 + 'px';
+    simBar.style.top  = (h1 + h2) + 'px';
+    recoBar.style.top = (h1 + h2 + h3) + 'px';
+  }
+
+  // ── INIT ──────────────────────────────────────────────
+  updateAll();
+  updateStickyTops();
+  window.addEventListener('resize', updateStickyTops);
+
+  // ════════════════════════════════════════════════════
+  //  MODULE DEVIS
+  // ════════════════════════════════════════════════════
+
+  let devisCounter  = 1;
+  let devisBilling  = 'annuel'; // indépendant du simulateur principal
+  let dvSmId        = 0;        // compteur unique pour les lignes sur mesure
+
+  // ── OUVERTURE / FERMETURE ──────────────────────────
+  function openDevis() {
+    document.getElementById('devisOverlay').classList.add('open');
+
+    const today = new Date();
+    const yyyy  = today.getFullYear();
+    const mm    = String(today.getMonth() + 1).padStart(2, '0');
+    const dd    = String(today.getDate()).padStart(2, '0');
+
+    if (!document.getElementById('dv-date').value)
+      document.getElementById('dv-date').value = `${yyyy}-${mm}-${dd}`;
+    if (!document.getElementById('dv-numero').value)
+      document.getElementById('dv-numero').value = `DV-${yyyy}${mm}-${String(devisCounter).padStart(2, '0')}`;
+
+    // Sync facturation avec le simulateur à la première ouverture
+    devisBilling = billing;
+    document.getElementById('dv-billing-annuel').classList.toggle('active', devisBilling === 'annuel');
+    document.getElementById('dv-billing-mensuel').classList.toggle('active', devisBilling === 'mensuel');
+
+    buildDevisPacks();
+    updateDevisPreview();
+  }
+
+  function closeDevis() {
+    document.getElementById('devisOverlay').classList.remove('open');
+  }
+
+  function closeDevisOverlay(event) {
+    if (event.target === document.getElementById('devisOverlay')) closeDevis();
+  }
+
+  // ── FACTURATION DU DEVIS ──────────────────────────
+  function setDevisBilling(type) {
+    // Sauvegarder sélections + quantités
+    const saved = {};
+    document.querySelectorAll('.devis-pack-item').forEach(item => {
+      const cb = item.querySelector('input[type=checkbox]');
+      if (cb && cb.checked) {
+        const qty = item.querySelector('.dv-qty');
+        saved[item.dataset.packId] = qty ? (parseInt(qty.value) || 1) : 1;
+      }
+    });
+
+    devisBilling = type;
+    document.getElementById('dv-billing-annuel').classList.toggle('active', type === 'annuel');
+    document.getElementById('dv-billing-mensuel').classList.toggle('active', type === 'mensuel');
+    buildDevisPacks();
+
+    // Restaurer sélections
+    Object.entries(saved).forEach(([packId, qty]) => {
+      const item = document.querySelector(`.devis-pack-item[data-pack-id="${packId}"]`);
+      if (!item) return;
+      const cb = item.querySelector('input[type=checkbox]');
+      if (cb) {
+        cb.checked = true;
+        item.classList.add('selected');
+        const wrap  = item.querySelector('.dv-qty-wrap');
+        const input = item.querySelector('.dv-qty');
+        if (wrap)  wrap.classList.add('visible');
+        if (input) input.value = qty;
+      }
+    });
+
+    updateDevisPreview();
+  }
+
+  // ── LISTE DES PACKS ───────────────────────────────
+  function buildDevisPacks() {
+    const container    = document.getElementById('devisPacks');
+    container.innerHTML = '';
+    const bl = devisBilling === 'annuel' ? '/mois (annuel)' : '/mois (mensuel)';
+
+    function makeItem(id, label, prix) {
+      const div = document.createElement('div');
+      div.className        = 'devis-pack-item';
+      div.dataset.packId   = id;
+      div.dataset.prix     = prix;
+      div.dataset.label    = label;
+      div.dataset.unite    = bl;
+      div.innerHTML = `
+        <input type="checkbox" id="${id}" onchange="toggleDevisPack(this)">
+        <label class="devis-pack-label" for="${id}">${label}</label>
+        <span class="dv-qty-wrap" id="dv-qw-${id}">
+          <input type="number" class="dv-qty" value="1" min="1" max="999" oninput="updateDevisPreview()" title="Quantité">
+          <span class="dv-qty-x">×</span>
+        </span>
+        <span class="devis-pack-price">${fmt(prix)}<span style="font-size:11px;font-weight:500;color:var(--text-light);"> ${bl}</span></span>
+      `;
+      return div;
+    }
+
+    function addHeader(txt) {
+      const h = document.createElement('div');
+      h.style.cssText = 'font-size:10px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:0.6px;margin:10px 0 4px;';
+      h.textContent = txt;
+      container.appendChild(h);
+    }
+
+    const p = (ref, lic) => prixCommercial(ref * (1 + margin / 100) / 1.4);
+
+    addHeader('Fairwai 360 — Forfaits standard');
+    data360.forEach(row => {
+      const cb = devisBilling === 'annuel' ? row.clientAnnuel : row.clientMensuel;
+      container.appendChild(makeItem(`pack-360-${row.palier}`, `Pack 360 ${row.palier}`, p(cb)));
+    });
+
+    addHeader('Fairwai Voice — Forfaits standard');
+    dataVoice.forEach(row => {
+      const cb = devisBilling === 'annuel' ? row.clientAnnuel : row.clientMensuel;
+      container.appendChild(makeItem(`pack-voice-${row.palier}`, `Pack Voice ${row.palier}`, p(cb)));
+    });
+
+    addHeader('Licences individuelles');
+    const cbExec  = devisBilling === 'annuel' ? licenceExec.clientAnnuel      : licenceExec.clientMensuel;
+    const cbVoice = devisBilling === 'annuel' ? licenceVoiceInd.clientAnnuel  : licenceVoiceInd.clientMensuel;
+    container.appendChild(makeItem('pack-exec',      'Licence Executive Illimitée (individuelle)', p(cbExec)));
+    container.appendChild(makeItem('pack-voice-ind', 'Licence Voice Individuelle Illimitée',      p(cbVoice)));
+  }
+
+  function toggleDevisPack(checkbox) {
+    const item = checkbox.closest('.devis-pack-item');
+    item.classList.toggle('selected', checkbox.checked);
+    const wrap = item.querySelector('.dv-qty-wrap');
+    if (wrap) wrap.classList.toggle('visible', checkbox.checked);
+    updateDevisPreview();
+  }
+
+  // ── LIGNES PERSONNALISÉES ─────────────────────────
+  function addLigneSurMesure() {
+    dvSmId++;
+    const id  = dvSmId;
+    const div = document.createElement('div');
+    div.className = 'dv-ligne-sm';
+    div.id        = `dv-sm-${id}`;
+    div.innerHTML = `
+      <input type="text"   class="dv-sm-desc"  placeholder="Description"  oninput="updateDevisPreview()" />
+      <input type="number" class="dv-sm-qty"   value="1" min="1"          oninput="updateDevisPreview()" title="Quantité" />
+      <input type="number" class="dv-sm-prix"  placeholder="0,00"step="0.01" oninput="updateDevisPreview()" />
+      <input type="text"   class="dv-sm-unite" value="/mois"              oninput="updateDevisPreview()" title="Unité" />
+      <button class="dv-sm-remove" onclick="removeLigneSurMesure(${id})" title="Supprimer">×</button>
+    `;
+    document.getElementById('devisSurMesure').appendChild(div);
+    div.querySelector('.dv-sm-desc').focus();
+    updateDevisPreview();
+  }
+
+  function removeLigneSurMesure(id) {
+    const el = document.getElementById(`dv-sm-${id}`);
+    if (el) { el.remove(); updateDevisPreview(); }
+  }
+
+  // ── APERÇU DU DEVIS ──────────────────────────────
+  function updateDevisPreview() {
+    const g  = id => (document.getElementById(id)?.value.trim() || '');
+    const chk = id => (document.getElementById(id)?.checked || false);
+
+    const partSociete  = g('dv-partenaire-societe')  || '—';
+    const partContact  = g('dv-partenaire-contact');
+    const partEmail    = g('dv-partenaire-email');
+    const partTel      = g('dv-partenaire-tel');
+    const partSiret    = g('dv-partenaire-siret');
+    const partTva      = g('dv-partenaire-tva');
+    const cliSociete   = g('dv-client-societe')  || '—';
+    const cliContact   = g('dv-client-contact');
+    const cliEmail     = g('dv-client-email');
+    const cliTel       = g('dv-client-tel');
+    const cliSiret     = g('dv-client-siret');
+    const cliTva       = g('dv-client-tva');
+    const numero       = g('dv-numero') || '—';
+    const dateRaw      = g('dv-date');
+    const remise       = parseFloat(document.getElementById('dv-remise')?.value) || 0;
+    const hideFairwai  = chk('dv-hide-fairwai');
+
+    let dateLabel = '—';
+    if (dateRaw) { const [y, m, d] = dateRaw.split('-'); dateLabel = `${d}/${m}/${y}`; }
+
+    // Packs sélectionnés
+    const lignes = [];
+    document.querySelectorAll('.devis-pack-item.selected').forEach(item => {
+      const prix  = parseFloat(item.dataset.prix) || 0;
+      const label = item.dataset.label;
+      const unite = item.dataset.unite;
+      const qty   = parseInt(item.querySelector('.dv-qty')?.value) || 1;
+      lignes.push({ label, qty, prixUnit: prix, total: prix * qty, unite });
+    });
+
+    // Lignes personnalisées
+    document.querySelectorAll('.dv-ligne-sm').forEach(line => {
+      const desc  = line.querySelector('.dv-sm-desc')?.value.trim() || '';
+      const qty   = parseFloat(line.querySelector('.dv-sm-qty')?.value)  || 1;
+      const prix  = parseFloat(line.querySelector('.dv-sm-prix')?.value) || 0;
+      const unite = line.querySelector('.dv-sm-unite')?.value.trim()      || '/mois';
+      if (desc || prix > 0) lignes.push({ label: desc || '—', qty, prixUnit: prix, total: prix * qty, unite, sm: true });
+    });
+
+    const totalBrut = lignes.reduce((s, l) => s + l.total, 0);
+    const totalNet  = totalBrut * (1 - remise / 100);
+    const billingMode = devisBilling === 'annuel' ? 'Facturation annuelle (mensualités)' : 'Facturation mensuelle';
+
+    const infoBlock = (titre, societe, contact, email, tel, siret, tva) => `
+      <div style="background:#F7F5F1;border-radius:8px;padding:11px 13px;">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#888880;margin-bottom:5px;">${titre}</div>
+        <div style="font-weight:700;color:#1A1A1A;font-size:13px;">${societe}</div>
+        ${contact ? `<div style="color:#4A4A4A;font-size:12px;">${contact}</div>` : ''}
+        ${email   ? `<div style="color:#4A4A4A;font-size:11px;margin-top:2px;">✉ <a href="mailto:${email}" style="color:#3452FF;text-decoration:none;">${email}</a></div>` : ''}
+        ${tel     ? `<div style="color:#4A4A4A;font-size:11px;">📞 ${tel}</div>` : ''}
+        ${siret   ? `<div style="color:#888880;font-size:11px;margin-top:2px;">SIRET : ${siret}</div>` : ''}
+        ${tva     ? `<div style="color:#888880;font-size:11px;">TVA : ${tva}</div>` : ''}
+      </div>`;
+
+    const html = `
+      <div style="font-family:'Inter',sans-serif;color:#1A1A1A;font-size:13px;line-height:1.6;">
+
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;padding-bottom:13px;border-bottom:2px solid #3452FF;">
+          ${!hideFairwai
+            ? `<div><div style="font-size:20px;font-weight:800;color:#3452FF;letter-spacing:-0.5px;">fairw.ai</div><div style="font-size:11px;color:#888880;margin-top:1px;">Espace Partenaires</div></div>`
+            : `<div></div>`}
+          <div style="text-align:right;">
+            <div style="font-size:16px;font-weight:800;color:#1A1A1A;">DEVIS ${numero}</div>
+            <div style="font-size:12px;color:#4A4A4A;margin-top:2px;">Date : ${dateLabel}</div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+          ${infoBlock('Partenaire / Revendeur', partSociete, partContact, partEmail, partTel, partSiret, partTva)}
+          ${infoBlock('Client', cliSociete, cliContact, cliEmail, cliTel, cliSiret, cliTva)}
+        </div>
+
+        <div style="font-size:11px;color:#3452FF;font-weight:600;margin-bottom:10px;">
+          ${billingMode}${remise > 0 ? ` · Remise : ${remise}%` : ''}
+        </div>
+
+        ${lignes.length === 0
+          ? `<div style="text-align:center;padding:22px;color:#888880;font-size:13px;border:1.5px dashed #DEDAD3;border-radius:8px;">Sélectionnez des offres ou ajoutez des lignes</div>`
+          : `<table style="width:100%;border-collapse:collapse;font-size:12px;">
+              <thead>
+                <tr style="background:#EEF0FF;">
+                  <th style="text-align:left;padding:7px 9px;font-weight:700;border-radius:6px 0 0 6px;">Désignation</th>
+                  <th style="text-align:center;padding:7px 5px;font-weight:700;">Qté</th>
+                  <th style="text-align:right;padding:7px 8px;font-weight:700;">Prix unitaire</th>
+                  <th style="text-align:right;padding:7px 9px;font-weight:700;${remise > 0 ? '' : 'border-radius:0 6px 6px 0;'}">Total HT</th>
+                  ${remise > 0 ? `<th style="text-align:right;padding:7px 9px;font-weight:700;color:#3452FF;border-radius:0 6px 6px 0;">Après remise</th>` : ''}
+                </tr>
+              </thead>
+              <tbody>
+                ${lignes.map((l, i) => `
+                  <tr style="border-bottom:1px solid #E8E4DE;background:${i % 2 === 0 ? '#fff' : '#FAFAF8'};">
+                    <td style="padding:8px 9px;font-weight:600;">${l.label}${!l.sm ? `<span style="font-size:10px;color:#888880;font-weight:400;"> ${l.unite}</span>` : ''}</td>
+                    <td style="padding:8px 5px;text-align:center;color:#4A4A4A;">${l.qty}</td>
+                    <td style="padding:8px 8px;text-align:right;color:#4A4A4A;">${fmt(l.prixUnit)}${l.sm ? `<span style="font-size:10px;color:#888880;"> ${l.unite}</span>` : ''}</td>
+                    <td style="padding:8px 9px;text-align:right;font-weight:700;${remise > 0 ? 'color:#888880;' : ''}">${fmt(l.total)}</td>
+                    ${remise > 0 ? `<td style="padding:8px 9px;text-align:right;font-weight:700;color:#3452FF;">${fmt(l.total * (1 - remise / 100))}</td>` : ''}
+                  </tr>`).join('')}
+              </tbody>
+              <tfoot>
+                <tr style="background:#F7F5F1;border-top:2px solid #DEDAD3;">
+                  <td colspan="3" style="padding:9px;font-weight:800;">Total mensuel HT</td>
+                  <td style="padding:9px;text-align:right;font-weight:${remise > 0 ? '400' : '800'};${remise > 0 ? 'color:#aaa;text-decoration:line-through;' : ''}">${fmt(totalBrut)}</td>
+                  ${remise > 0 ? `<td style="padding:9px;text-align:right;font-weight:800;color:#3452FF;">${fmt(totalNet)}</td>` : ''}
+                </tr>
+              </tfoot>
+            </table>`}
+
+        <div style="margin-top:14px;padding-top:10px;border-top:1px solid #E8E4DE;font-size:10px;color:#888880;">
+          Tarifs en euros HT · Devis indicatif, sans engagement · Validité 30 jours
+        </div>
+      </div>`;
+
+    document.getElementById('devisPreview').innerHTML = html;
+  }
+
+  // ── IMPRESSION / PDF ──────────────────────────────
+  function imprimerDevis() {
+    document.getElementById('printDevis').innerHTML = `
+      <div style="max-width:720px;margin:40px auto;padding:40px;font-family:'Inter',sans-serif;">
+        ${document.getElementById('devisPreview').innerHTML}
+      </div>`;
+    window.print();
+    devisCounter++;
+    const t = new Date();
+    document.getElementById('dv-numero').value =
+      `DV-${t.getFullYear()}${String(t.getMonth()+1).padStart(2,'0')}-${String(devisCounter).padStart(2,'0')}`;
+    updateDevisPreview();
+  }
+
+  function telechargerPDF() { imprimerDevis(); }
+</script>
+</body>
+</html>
